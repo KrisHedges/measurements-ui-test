@@ -1,0 +1,187 @@
+<!DOCTYPE html>  <html> <head>   <title>measure.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="application.html">                 application.coffee               </a>                                           <a class="source" href="client.html">                 client.coffee               </a>                                           <a class="source" href="dial.html">                 dial.coffee               </a>                                           <a class="source" href="measure.html">                 measure.coffee               </a>                                           <a class="source" href="weirdkong.html">                 weirdkong.coffee               </a>                                           <a class="source" href="features.html">                 features.coffee               </a>                                           <a class="source" href="home.html">                 home.coffee               </a>                                           <a class="source" href="index.html">                 index.coffee               </a>                                           <a class="source" href="measures.html">                 measures.coffee               </a>                                           <a class="source" href="weirdkongs.html">                 weirdkongs.coffee               </a>                                           <a class="source" href="feature.html">                 feature.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               measure.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <hr />
+
+<p>Measurement Dial</p>
+
+<h2>8 Steps - Should range from 0 - 16</h2>
+
+<p>0        - 0
+0.125    - 1/8
+0.25     - 1/4
+0.375    - 3/8
+0.5      - 1/2
+0.625    - 5/8
+0.75     - 3/4
+0.875    - 7/8</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">$</span> <span class="nf">-&gt;</span>
+  <span class="nv">touchable = </span><span class="kc">false</span>
+  <span class="nv">mobile = </span><span class="kc">false</span>
+
+  <span class="nv">initTouch = </span><span class="nf">-&gt;</span>
+    <span class="nv">p = </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">platform</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">p</span> <span class="o">==</span> <span class="s">&#39;iPad&#39;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">p</span> <span class="o">==</span> <span class="s">&#39;iPhone&#39;</span><span class="p">)</span> <span class="o">or</span> <span class="p">(</span><span class="nx">p</span> <span class="o">==</span> <span class="s">&#39;iPod&#39;</span><span class="p">)</span>
+      <span class="nv">touchable = </span><span class="kc">true</span>
+  <span class="nx">initTouch</span><span class="p">()</span>
+
+  <span class="k">if</span> <span class="nx">touchable</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;html&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;notouch&#39;</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="nx">touchable</span>
+    <span class="nv">select = </span><span class="s">&#39;tap&#39;</span>
+  <span class="k">else</span>
+    <span class="nv">select = </span><span class="s">&#39;click&#39;</span>
+
+  <span class="nv">doc = </span><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">)</span>
+
+  <span class="nv">form = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#newingredient&#39;</span><span class="p">)</span>
+  <span class="nv">ingredientamount = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#newingredient input[name=ingredient-amount]&#39;</span><span class="p">)</span>
+  <span class="nv">ingredientmeasure = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#newingredient input[name=ingredient-measure]&#39;</span><span class="p">)</span>
+  <span class="nv">ingredientname = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#newingredient input[name=ingredient-name]&#39;</span><span class="p">)</span>
+
+  <span class="nv">piemenu = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.piemenu&#39;</span><span class="p">)</span>
+  <span class="nv">newpiemenuback = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;a class=&#39;back&#39; data-value=&#39;prev&#39;&gt;&lt;/a&gt;&quot;</span><span class="p">)</span>
+  <span class="nx">piemenu</span><span class="p">.</span><span class="nx">append</span> <span class="nx">newpiemenuback</span>
+  <span class="nv">piemenuback = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;.piemenu .back&quot;</span><span class="p">)</span>
+
+  <span class="nv">pieMenuBackButton = </span><span class="nf">-&gt;</span>
+    <span class="k">if</span> <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.piemenu ul .active&#39;</span><span class="p">).</span><span class="o">is</span><span class="p">(</span><span class="s">&#39;li:first-child&#39;</span><span class="p">)</span>
+      <span class="nx">piemenuback</span><span class="p">.</span><span class="nx">hide</span><span class="p">()</span>
+    <span class="k">else</span>
+      <span class="nx">piemenuback</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span>
+  <span class="nx">pieMenuBackButton</span><span class="p">()</span>
+
+  <span class="nx">ingredientamount</span><span class="p">.</span><span class="nx">on</span> <span class="nx">select</span><span class="p">,</span> <span class="nf">(e)-&gt;</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">focus</span><span class="p">()</span>
+    <span class="nv">activecontrol = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;</span><span class="err">#</span><span class="s">visualcontrols div.active&quot;</span><span class="p">)</span>
+    <span class="nx">activecontrol</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+    <span class="nx">dial</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+
+  <span class="nx">ingredientmeasure</span><span class="p">.</span><span class="nx">on</span> <span class="nx">select</span><span class="p">,</span> <span class="nf">(e)-&gt;</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">focus</span><span class="p">()</span>
+    <span class="nv">activecontrol = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;</span><span class="err">#</span><span class="s">visualcontrols div.active&quot;</span><span class="p">)</span>
+    <span class="nx">activecontrol</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+    <span class="nx">piemenu</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+
+  <span class="nx">ingredientname</span><span class="p">.</span><span class="nx">on</span> <span class="nx">select</span><span class="p">,</span> <span class="nf">(e)-&gt;</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">focus</span><span class="p">()</span>
+
+  <span class="nv">piemenubutton = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.piemenu a&#39;</span><span class="p">)</span>
+  <span class="nx">piemenubutton</span><span class="p">.</span><span class="nx">on</span> <span class="nx">select</span><span class="p">,</span> <span class="nf">(e)-&gt;</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+    <span class="nv">activepiemenu = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.piemenu ul li.active&#39;</span><span class="p">)</span>
+    <span class="nv">val = </span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;data-value&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">val</span> <span class="o">is</span> <span class="s">&quot;next&quot;</span>
+      <span class="nx">activepiemenu</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+      <span class="nx">activepiemenu</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="s">&#39;li&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+      <span class="nx">pieMenuBackButton</span><span class="p">()</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">val</span> <span class="o">is</span> <span class="s">&quot;prev&quot;</span>
+      <span class="nx">activepiemenu</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+      <span class="nx">activepiemenu</span><span class="p">.</span><span class="nx">prev</span><span class="p">(</span><span class="s">&#39;li&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+      <span class="nx">pieMenuBackButton</span><span class="p">()</span>
+    <span class="k">else</span>
+      <span class="nx">ingredientmeasure</span><span class="p">.</span><span class="nx">val</span> <span class="nx">val</span>
+      <span class="nx">ingredientname</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+
+  <span class="nv">dial = </span>  <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.dial&#39;</span><span class="p">)</span>
+  <span class="nv">dialval = </span>  <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.dial .value&#39;</span><span class="p">)</span>
+  <span class="nv">val = </span><span class="nb">parseFloat</span> <span class="nx">dialval</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;data-value&quot;</span><span class="p">)</span>
+  <span class="nv">dialTop = </span><span class="nx">dial</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s">&#39;.top&#39;</span><span class="p">)</span>
+  <span class="nv">startDeg = </span><span class="o">-</span><span class="mi">1</span>
+  <span class="nv">currentRot = </span><span class="mi">0</span>
+  <span class="nv">rotation = </span><span class="mi">0</span>
+  <span class="nv">lastDeg = </span><span class="mi">0</span>
+  <span class="nv">rad2deg = </span><span class="mi">180</span><span class="o">/</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span>
+  <span class="nv">offset = </span><span class="nx">dial</span><span class="p">.</span><span class="nx">offset</span><span class="p">()</span>
+  <span class="nv">center =</span>
+    <span class="nv">y: </span><span class="nx">offset</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">dial</span><span class="p">.</span><span class="nx">height</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="nv">x: </span><span class="nx">offset</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">dial</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span>
+
+  <span class="nv">roundToStep = </span><span class="nf">(n)-&gt;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="nx">n</span> <span class="o">%</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span> <span class="p">)</span>
+      <span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">n</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span>
+    <span class="k">else</span>
+      <span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">n</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+
+  <span class="nv">fraction = </span><span class="nf">(dec)-&gt;</span>
+    <span class="k">switch</span> <span class="nx">dec</span>
+      <span class="k">when</span> <span class="mi">0</span>
+        <span class="s">&quot;&quot;</span>
+      <span class="k">when</span> <span class="mf">0.125</span>
+        <span class="s">&quot;1/8&quot;</span>
+      <span class="k">when</span> <span class="mf">0.25</span>
+        <span class="s">&quot;1/4&quot;</span>
+      <span class="k">when</span> <span class="mf">0.375</span>
+        <span class="s">&quot;3/8&quot;</span>
+      <span class="k">when</span> <span class="mf">0.5</span>
+        <span class="s">&quot;1/2&quot;</span>
+      <span class="k">when</span> <span class="mf">0.625</span>
+        <span class="s">&quot;5/8&quot;</span>
+      <span class="k">when</span> <span class="mf">0.75</span>
+        <span class="s">&quot;3/4&quot;</span>
+      <span class="k">when</span> <span class="mf">0.875</span>
+        <span class="s">&quot;7/8&quot;</span>
+
+  <span class="nv">makeString = </span><span class="nf">(v)-&gt;</span>
+    <span class="nv">dec = </span><span class="nx">v</span> <span class="o">%</span> <span class="mi">1</span>
+    <span class="nv">whole =</span>
+      <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">v</span> <span class="o">-</span> <span class="nx">dec</span><span class="p">)</span> <span class="o">is</span> <span class="mi">0</span> <span class="o">and</span> <span class="nx">v</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="s">&#39;&#39;</span>
+      <span class="k">else</span>
+        <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">v</span> <span class="o">-</span> <span class="nx">dec</span><span class="p">)</span>
+    <span class="nv">valstring = </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">whole</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">fraction</span><span class="p">(</span><span class="nx">dec</span><span class="p">)</span><span class="si">}</span><span class="s">&quot;</span>
+    <span class="nx">valstring</span>
+
+  <span class="nx">dial</span><span class="p">.</span><span class="nx">on</span> <span class="s">&#39;mousedown touchstart&#39;</span><span class="p">,</span> <span class="nf">(e)-&gt;</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+    <span class="nx">ingredientamount</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+    <span class="nx">dial</span><span class="p">.</span><span class="nx">on</span> <span class="s">&#39;mousemove.rem touchmove.rem&#39;</span><span class="p">,</span> <span class="nf">(e)-&gt;</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+
+      <span class="nv">e = </span><span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span> <span class="k">then</span> <span class="nx">e</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">touches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="nx">e</span>
+      <span class="nv">a = </span><span class="nx">center</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span>
+      <span class="nv">b = </span><span class="nx">center</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span>
+      <span class="nv">deg = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span><span class="o">*</span><span class="nx">rad2deg</span>
+      <span class="nv">val = </span><span class="nb">parseFloat</span> <span class="nx">dialval</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;data-value&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Save the starting position of the drag</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">if</span><span class="p">(</span><span class="nx">startDeg</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nv">startDeg = </span><span class="nx">deg</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Calculating the current rotation</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nv">tmpval = </span><span class="nx">roundToStep</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">deg</span><span class="o">-</span><span class="nx">startDeg</span><span class="p">)</span> <span class="o">+</span> <span class="nx">rotation</span><span class="p">)</span>
+      <span class="nv">tmprot = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">deg</span><span class="o">-</span><span class="nx">startDeg</span><span class="p">)</span> <span class="o">+</span> <span class="nx">rotation</span><span class="p">)</span>
+      <span class="nv">currentVal = </span><span class="nx">tmpval</span>
+      <span class="nv">currentRot = </span><span class="nx">tmprot</span>
+      <span class="k">if</span> <span class="nx">val</span> <span class="o">is</span> <span class="mi">0</span>
+        <span class="nx">dialval</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+        <span class="nx">ingredientamount</span><span class="p">.</span><span class="nx">val</span> <span class="s">&#39;&#39;</span>
+      <span class="k">if</span> <span class="nx">currentVal</span> <span class="o">&gt;</span> <span class="nx">lastDeg</span> <span class="o">and</span> <span class="nx">val</span> <span class="o">&lt;</span> <span class="mf">16.875</span>
+        <span class="nv">newval = </span><span class="p">(</span><span class="nx">val</span> <span class="o">+</span> <span class="mf">0.125</span><span class="p">)</span>
+        <span class="nx">dialval</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;data-value&quot;</span><span class="p">,</span> <span class="nx">newval</span><span class="p">)</span>
+        <span class="nx">dialval</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;data-value-string&quot;</span><span class="p">,</span> <span class="nx">makeString</span><span class="p">(</span><span class="nx">newval</span><span class="p">))</span>
+        <span class="nx">ingredientamount</span><span class="p">.</span><span class="nx">val</span> <span class="nx">makeString</span><span class="p">(</span><span class="nx">newval</span><span class="p">)</span>
+        <span class="nx">dialval</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;ok&#39;</span><span class="p">)</span>
+        <span class="nx">dialval</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="nx">currentVal</span> <span class="o">&lt;</span> <span class="nx">lastDeg</span> <span class="o">and</span> <span class="nx">val</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="nv">newval = </span><span class="p">(</span><span class="nx">val</span> <span class="o">-</span> <span class="mf">0.125</span><span class="p">)</span>
+        <span class="nx">dialval</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;data-value&quot;</span><span class="p">,</span> <span class="nx">newval</span><span class="p">)</span>
+        <span class="nx">dialval</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;data-value-string&quot;</span><span class="p">,</span> <span class="nx">makeString</span><span class="p">(</span><span class="nx">newval</span><span class="p">))</span>
+        <span class="nx">ingredientamount</span><span class="p">.</span><span class="nx">val</span> <span class="nx">makeString</span><span class="p">(</span><span class="nx">newval</span><span class="p">)</span>
+        <span class="nx">dialval</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;ok&#39;</span><span class="p">)</span>
+        <span class="nx">dialval</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+
+      <span class="nx">dial</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s">&#39;transform&#39;</span><span class="p">,</span><span class="s">&#39;rotate(&#39;</span><span class="o">+</span><span class="p">(</span><span class="nx">currentRot</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;deg)&#39;</span><span class="p">)</span>
+      <span class="nx">dialval</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s">&#39;transform&#39;</span><span class="p">,</span><span class="s">&#39;rotate(&#39;</span><span class="o">+</span><span class="p">(</span><span class="nx">currentRot</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s">&#39;deg)&#39;</span><span class="p">)</span>
+
+      <span class="nv">lastDeg = </span><span class="nx">tmpval</span>
+
+    <span class="nx">doc</span><span class="p">.</span><span class="nx">on</span> <span class="s">&#39;mouseup.rem  touchend&#39;</span><span class="p">,</span> <span class="nf">(e)-&gt;</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+      <span class="nx">dial</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s">&#39;.rem&#39;</span><span class="p">)</span>
+      <span class="nx">doc</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s">&#39;.rem&#39;</span><span class="p">)</span>
+
+      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.ok&#39;</span><span class="p">).</span><span class="nx">on</span> <span class="nx">select</span><span class="p">,</span> <span class="nf">(e)-&gt;</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+        <span class="nx">dial</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+        <span class="nx">piemenu</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;active&#39;</span><span class="p">)</span>
+        <span class="nx">ingredientmeasure</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
+
+      <span class="nx">dialval</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&#39;ok&#39;</span><span class="p">)</span> <span class="k">unless</span> <span class="nx">val</span> <span class="o">is</span> <span class="mi">0</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Saving the current rotation</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nv">rotation = </span><span class="nx">currentRot</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Marking the starting degree as invalid</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nv">startDeg = </span><span class="o">-</span><span class="mi">1</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

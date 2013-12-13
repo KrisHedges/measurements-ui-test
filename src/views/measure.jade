@@ -1,0 +1,46 @@
+extends measurelayout
+block content
+  .container
+    header
+      h1= title
+    section
+      form#newingredient
+        fieldset
+          legend New Ingredient
+          input(type="text", name="ingredient-amount", placeholder="Amt.", readonly="true")
+          input(type="text", name="ingredient-measure", placeholder="Measure", readonly="true")
+          input(type="text", name="ingredient-name", placeholder="Ingredient Name" )
+      #visualcontrols
+        .dial.active
+          .value(data-value="0", data-value-string="0")
+            span.icon-checkmark
+        .piemenu
+          ul
+            li.active
+              ul
+                li
+                  a(href="#", data-value="c.")
+                    span Cups
+                li
+                  a(href="#", data-value="tsp.")
+                    span tsp.
+                li
+                  a(href="#", data-value="Tbsp.")
+                    span Tbsp.
+                li
+                  a(href="#", data-value="next")
+                    span.icon-forward
+            li
+              ul
+                li
+                  a(href="#", data-value="gal.")
+                    span Gallons
+                li
+                  a(href="#", data-value="qt.")
+                    span Quarts
+                li
+                  a(href="#", data-value="pt.")
+                    span Pints
+                li
+                  a(href="#", data-value="-")
+                    span None

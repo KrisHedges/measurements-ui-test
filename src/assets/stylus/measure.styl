@@ -1,0 +1,341 @@
+@import 'fluidity'
+@import 'fontstyle'
+
+@keyframes fadeIn
+  0%
+    opacity 0
+  100%
+    opacity 1
+
+@keyframes blink
+  0%
+    opacity 0
+  20%
+    opacity 1
+  30%
+    opacity 0
+  40%
+    opacity 1
+  50%
+    opacity 0
+  70%
+    opacity 1
+  100%
+    opacity 1
+
+@keyframes scaleIn
+  0%
+    transform scale(0)
+  100%
+    transform scale(1)
+
+//        animation-name blink
+//        animation-duration .5s
+//        animation-timing-function linear
+//        animation-iteration-count 1
+
+html
+  min-width 320px
+  height 100%
+  margin 0
+  padding 0
+  transform rotate3d(0,0,0,0)
+
+body
+  position relative
+  width 100%
+  height 100%
+  margin 0
+  padding 0
+
+h1
+  margin 0.5em
+  text-align center
+
+a
+  outline none
+  user-select none
+  webkit-touch-callout none
+  webkit-text-size-adjust none
+  webkit-tap-highlight-color rgba(0,0,0,0)
+
+fieldset
+  border 0
+  input
+    float left
+    border 0
+    margin 0 .05em
+    padding 1em 0.5em
+    outline none
+    cursor pointer
+    border-radius 2px
+    html.notouch &:hover,
+    &:active,
+    &:focus
+      background lighter-color3
+
+#newingredient
+  display block
+  width 315px
+  margin 0 auto
+  color darker-color3
+  input:nth-child(2)
+    width 2.4em
+  input:nth-child(3)
+    width 3.9em
+    text-align center
+  input:nth-child(4)
+    width 8em
+
+container
+  grid(100%,80%)
+
+shadowblue = rgba(darken(saturate(#044fff,0%), 70%), 10%)
+
+circle()
+  display block
+  border-radius 50%
+
+#visualcontrols
+  position relative
+  display block
+  width 200px
+  height 200px
+  margin 0 auto
+  overflow hidden
+  user-select none
+  & > div
+    position absolute
+    top 0
+    left 0
+    circle()
+    width 200px
+    height 200px
+    margin 0em
+    border 1px solid darker-color3
+    background darker-color1
+    box-sizing border-box
+    text-align left
+    padding 0
+    opacity 0
+    transition opacity .24s linear
+    z-index 1
+    &.active
+      opacity 1 !important
+      z-index 4 !important
+  & > div:nth-child(1)
+    z-index 1
+  & > div:nth-child(2)
+    z-index 1
+  & > div:nth-child(3)
+    z-index 1
+  & > div:nth-child(4)
+    z-index 1
+
+.dial
+  &:before
+    content ''
+    circle()
+    width 34px
+    height 34px
+    background lighter-color1
+    position absolute
+    top 50%
+    margin-top -17px
+    cursor pointer !important
+  .value
+    position absolute
+    top 50%
+    left 50%
+    margin-top -65px
+    margin-left -65px
+    circle()
+    width 130px
+    height 130px
+    border 1px solid darker-color3
+    box-sizing border-box
+    background lighter-color1
+    text-align center
+    color white
+    font-size 1.825em
+    z-index 2
+    text-shadow 0px 0px 2px darker-color2
+    .icon-checkmark
+      position absolute
+      top 70%
+      left 39%
+      opacity 0
+    &.active
+      cursor pointer !important
+      .icon-checkmark
+        opacity 0.20
+    &.ok
+      .icon-checkmark
+        opacity 1
+    &:before
+      content attr(data-value-string)
+      display block
+      margin-top 38%
+      margin-bottom 0.5em
+      animation-name fadeIn
+      animation-duration .04s
+      animation-iteration-count 1
+
+.piemenu
+  background-color lighter-color1 !important
+  z-index 1
+  box-sizing border-box
+  .back
+    position absolute
+    top 50%
+    left 50%
+    margin -23px 0 0 -23px
+    width 46px
+    height 46px
+    circle()
+    background lighter-color1
+    border 1px solid darker-color3
+    box-sizing border-box
+    z-index 2
+    overflow hidden
+    text-align center
+    html.notouch &:hover,
+    &:active
+      background darker-color1
+      cursor pointer
+    &:after
+      content '\22'
+      font-family 'brankic1979'
+      font-size 1.5em
+      line-height 1.5em
+      text-align center
+      color white
+      position absolute
+      top 50%
+      left 50%
+      padding 0
+      margin -.78em 0 0 -.78em
+      width 1.5em
+      height 1.5em
+      z-index 3
+      text-shadow 0px 0px 2px darker-color2
+  ul
+    position relative
+    width 200px
+    height 200px
+    margin 0
+    padding 0
+    circle()
+    list-style none
+    box-sizing border-box
+    li
+      margin 0
+      padding 0
+      display none !important
+      box-sizing border-box
+    .active,
+    .active li
+      display block !important
+    ul
+      position absolute
+      top 0
+      left 0
+      box-sizing border-box
+    & > li
+      display inline-block
+      position relative
+      float left
+      width 100%
+      height 100%
+      margin 0
+      padding 0
+      box-sizing border-box
+      & li:nth-child(2)
+        display block
+      a
+        display block
+        width 100%
+        height 100%
+        color white
+        text-decoration none
+        text-align center
+        font-size 1.15em
+        margin 0
+        padding 0
+        transition all .12s linear
+        z-index 3 !important
+        text-shadow 0px 0px 2px darker-color2
+        box-sizing border-box
+        user-select none
+        webkit-touch-callout none
+        webkit-text-size-adjust none
+        webkit-tap-highlight-color rgba(0,0,0,0)
+        html.notouch &:hover,
+        &:active
+          background-color darker-color1
+        span
+          position absolute
+          display block
+          width 100%
+          height 50%
+          transform-origin 50% 50%
+      & ul li
+        display inline-block
+        float left
+        width 50% !important
+        height 50% !important
+        text-align center
+        box-sizing border-box
+      & ul li:nth-child(1)
+        border-width 0px 1px 0px 0px
+        border-style solid
+        border-color darker-color3
+        a
+          border-top-left-radius 100%
+          span
+            margin-top 25%
+            transform rotate(-45deg) translate(0px, 20%)
+      & ul li:nth-child(2)
+        border-width 0px 0px 1px 0px
+        border-style solid
+        border-color darker-color3
+        a
+          border-top-right-radius 100%
+          span
+            margin-top 25%
+            transform rotate(45deg) translate(0px, 10px)
+      & ul li:nth-child(3)
+        border-width 1px 0px 0px 0px
+        border-style solid
+        border-color darker-color3
+        a
+          border-bottom-left-radius 100%
+          span
+            text-align center
+            margin-top 25%
+            transform rotate(45deg) translate(0px,10px)
+      & ul li:nth-child(4)
+        border-width 0px 0px 0px 1px
+        border-style solid
+        border-color darker-color3
+        a
+          border-bottom-right-radius 100%
+          span
+            text-align center
+            margin-top 25%
+            transform rotate(-45deg) translate(0px,10px)
+    &:after
+      content ''
+      position absolute
+      top 50%
+      left 50%
+      margin -24px 0 0 -24px
+      width 46px
+      height 46px
+      circle()
+      background lighter-color1
+      border 1px solid darker-color3
+      box-sizing border-box
+      z-index 2
+      overflow hidden
+      text-align center

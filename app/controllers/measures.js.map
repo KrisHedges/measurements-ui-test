@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "measures.js",
+  "sourceRoot": "../../src/controllers/",
+  "sources": [
+    "measures.coffee"
+  ],
+  "names": [],
+  "mappings": "AAOA;CAAA,CAAA,CAAiB,GAAX,CAAN,EAAkB;CACZ,CAAkB,CAAnB,GAAH,GAAA,EAAA;CAAsB,CACf,CAAL,GAAA;CADoB,CAEb,GAAP,CAAA,QAFoB;CADP,KACf;CADF,EAAiB;CAAjB"
+}
